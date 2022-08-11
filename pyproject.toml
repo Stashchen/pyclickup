@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyclickup"
+version = "0.0.1"
+authors = [
+  { name="Pavel Stashchenko", email="pavel.stashchenko@gmail.com" },
+]
+description = "ORM that will allow to create your own ClickUp lists models."
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
