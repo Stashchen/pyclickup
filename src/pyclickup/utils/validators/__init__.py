@@ -7,3 +7,4 @@ from .string import StringValidator
 from .url import UrlValidator
 from .uuid import UuidValidator
 from .date import DateValidator
+from .labels import LabelsValidator
