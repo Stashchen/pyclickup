@@ -1,6 +1,6 @@
 from __future__ import annotations
-from functools import cached_property, lru_cache
-from typing import Any, List, Union, Optional
+from functools import cached_property
+from typing import Any, List, Union, Optional, Generator
 
 from .services import clickup_api
 from .services.cache import CustomFieldsCache, ClientListsRegistry
@@ -57,10 +57,6 @@ class ClickUpList(metaclass=ClientListsLookup):
         self._raw_task = raw_task
         self._fields_cache = CustomFieldsCache()
 
-    def __get_custom_fields_from_api(self) -> List[RawCustomField]:
-        raw_payload = clickup_api.get_custom_fields(self.LIST_ID)
-        return raw_payload['fields']
-
     @property
     def id(self) -> Optional[str]:
         return self._raw_task.get("id")
@@ -74,6 +70,16 @@ class ClickUpList(metaclass=ClientListsLookup):
         if not isinstance(value, str):
             raise TypeError("`name` attribute must be str")
         self._raw_task['name'] = value
+
+    @property
+    def description(self) -> Optional[str]:
+        return self._raw_task.get("description")
+
+    @description.setter
+    def description(self, value: Any) -> None:
+        if not isinstance(value, str):
+            raise TypeError("`description` attribute must be str")
+        self._raw_task['description'] = value
 
     @property
     def url(self) -> Optional[str]:
@@ -92,27 +98,30 @@ class ClickUpList(metaclass=ClientListsLookup):
 
         return self.__get_custom_fields_from_api()
 
-    @classmethod
-    @lru_cache(maxsize=1)
-    def get_all_tasks(cls) -> List[RawTask]:
-        """Method that will fetch all the tasks from the current list."""
-        page = 0  
-        all_tasks = []
+    def __get_custom_fields_from_api(self) -> List[RawCustomField]:
+        raw_payload = clickup_api.get_custom_fields(self.LIST_ID)
+        return raw_payload['fields']
 
-        while True:
-            tasks = clickup_api.get_batch_tasks(cls.LIST_ID, page).get('tasks')
-
-            if not tasks: break
-
-            all_tasks.extend(tasks)
-
-            if tasks and len(tasks) < 100: break
-
-            page += 1
-
-        return all_tasks 
-    
     # CRUD functionality
+    @classmethod
+    def _get_all_tasks_as_chunks(cls) -> Generator:
+        """
+        Method that will fetch all tasks by chunks of 100 tasks.
+        There is a generator as a return value to avoid extra api requests
+        for cases where we need to find some of the tasks, e.g. when we
+        invoke `get_by_name` method it wants us to run through all of the 
+        tasks and find out with correct `name` value, so better solution
+        here is to fetch tasks as chunks of 100 tasks and look through the 
+        chunk, to find out the good name. If name is found - stor intration.
+        """
+
+        page = 0
+        tasks = clickup_api.get_batch_tasks(cls.LIST_ID, page).get('tasks')
+
+        yield tasks if tasks else []
+
+        page += 1
+    
     @classmethod
     def get_by_id(cls, task_id: str):
         """Class method, that will fetch task by its id."""
@@ -122,14 +131,13 @@ class ClickUpList(metaclass=ClientListsLookup):
     @classmethod
     def get_by_name(cls, task_name: str):
         """Class method, that will fetch task by its name."""
+        for tasks in cls._get_all_tasks_as_chunks():
+            raw_task = next(filter(
+                lambda task: task['name'] == task_name, tasks 
+            ), None)
 
-        raw_task = next(filter(
-            lambda task: task['name'] == task_name, cls.get_all_tasks()
-        ), None)
-
-        if not raw_task: return
-
-        return cls(raw_task)
+            if raw_task:
+                return cls(raw_task)
 
     def create(self):
         """
