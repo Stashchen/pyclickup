@@ -1,6 +1,6 @@
 from .base import CustomField
-from utils.types import RawCustomField
-from utils.validators import CheckboxValidator
+from ..utils.types import RawCustomField
+from ..utils.validators import CheckboxValidator
 
 
 class CheckboxField(CustomField):
@@ -14,4 +14,10 @@ class CheckboxField(CustomField):
             return False
 
         return True if value == "true" else False 
+
+    def set_value(self, value: bool, raw_field: RawCustomField) -> None:
+        if value:
+            raw_field["value"] = "true"
+        else:
+            raw_field["value"] = "false"
 

@@ -1,7 +1,8 @@
 from typing import Optional
+
 from .base import CustomField
-from utils.types import RawCustomField
-from utils.validators import DropDownValidator
+from ..utils.types import RawCustomField
+from ..utils.validators import DropDownValidator
 
 
 class DropDownField(CustomField):

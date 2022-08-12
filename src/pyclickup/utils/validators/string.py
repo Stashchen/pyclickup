@@ -1,6 +1,7 @@
 from typing import Any
-from utils.types import RawCustomField
+
 from .base import ValidationError
+from ..types import RawCustomField
 
 
 class StringValidator:

@@ -1,7 +1,8 @@
 from typing import Any, List
-from utils.types import RawCustomField
+
 from .base import ValidationError
 from .string import StringValidator
+from ..types import RawCustomField
 
 
 class DropDownValidator(StringValidator):

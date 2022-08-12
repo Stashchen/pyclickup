@@ -1,8 +1,9 @@
 import re
 from typing import Any
-from utils.types import RawCustomField
+
 from .base import ValidationError
 from .string import StringValidator
+from ..types import RawCustomField
 
 
 class UuidValidator(StringValidator):

@@ -1,7 +1,8 @@
-from list import ClickUpList
 from typing import Any, Optional, Type
-from utils.types import RawCustomField
-from utils.validators import StringValidator
+
+from ..list import ClickUpList
+from ..utils.types import RawCustomField
+from ..utils.validators import StringValidator
 
 
 class CustomFieldNotFound(Exception):
@@ -28,16 +29,12 @@ class CustomField:
     1) Check that `instance` is `ClickUpList`
     2) Check that `CustomField.field_name` == `instance.name`  
     3) Check that `CustomField.TYPE` == `instance.type`
-
-    Get method workflow:
-    1)
     """
     TYPE = None
     VALIDATOR = StringValidator
 
     def __init__(self, field_name: str):
         self.field_name = field_name
-
 
     def __get__(self, instance: Any, instance_type: Type) -> Any:
         """

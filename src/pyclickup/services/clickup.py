@@ -1,11 +1,9 @@
 import os
 from requests import Response
-from utils.decorators import resp_to_json
-from utils.exceptions import AuthTokenMissing
+
 from .base import BaseApi
-
-
-os.environ["CLICKUP_AUTH_TOKEN"] = "pk_48036859_VHYZAJWVA6L8IW6U9W6P6FDTRA1K646L"
+from ..utils.decorators import resp_to_json
+from ..utils.exceptions import AuthTokenMissing
 
 
 class ClickUpApi(BaseApi):
@@ -31,6 +29,13 @@ class ClickUpApi(BaseApi):
     @resp_to_json
     def get_task(self, task_id: str) -> Response:
         return self.get(f"{self.endpoint}/task/{task_id}")
+
+    @resp_to_json
+    def get_batch_tasks(self, list_id: str, page: int=0) -> Response:
+        return self.get(
+            f"{self.endpoint}/list/{list_id}/task",
+            params=dict(page=page)
+        )
 
     @resp_to_json
     def create_task(self, list_id: str, **kwargs) -> Response:

@@ -1,8 +1,9 @@
 from typing import Optional
-from utils.types import RawCustomField
-from .base import CustomField
 
-from services import geo_grabber
+from .base import CustomField
+from ..services import geo_grabber
+from ..utils.types import RawCustomField
+
 
 
 class LocationField(CustomField):

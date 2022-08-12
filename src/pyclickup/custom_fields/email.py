@@ -1,5 +1,5 @@
 from .base import CustomField
-from utils.validators import EmailValidator
+from ..utils.validators import EmailValidator
 
 
 class EmailField(CustomField):

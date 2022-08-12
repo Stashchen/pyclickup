@@ -32,3 +32,23 @@ class CustomFieldsCache:
 
     def clear(self):
         self._storage.clear()
+
+
+class ClientListsRegistry:
+    """
+    Simple cache storage that will store all of the client's 
+    lists names and classes at the beginning of the runtime.
+    """
+    _storage = {}
+    
+    @classmethod
+    def get(cls, list_name: str):
+        return cls._storage.get(list_name, None)
+
+    @classmethod
+    def set(cls, list_name: str, value):
+        cls._storage[list_name] = value
+
+    @classmethod
+    def update(cls, clients_lists: dict):
+        cls._storage.update(clients_lists)

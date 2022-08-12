@@ -1,5 +1,5 @@
 from .base import CustomField
-from utils.validators import NumberValidator
+from ..utils.validators import NumberValidator
 
 
 class NumberField(CustomField):

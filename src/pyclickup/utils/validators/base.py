@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 from typing import Any
 
-from utils.types import RawCustomField
+from ..types import RawCustomField
 
 
 class ValidationError(Exception):

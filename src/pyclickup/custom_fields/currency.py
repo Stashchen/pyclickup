@@ -1,5 +1,5 @@
-from utils.validators import PositiveNumberValidator
 from .base import CustomField
+from ..utils.validators import PositiveNumberValidator
 
 
 class CurrencyField(CustomField):

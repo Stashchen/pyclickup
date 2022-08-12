@@ -1,5 +1,6 @@
 from requests import Session
-from utils.datastructures import Singleton
+
+from ..utils.datastructures import Singleton
 
 
 SAFE_METHODS = ("get", "head", "option")

@@ -1,7 +1,8 @@
 from typing import Any
-from list import ClickUpList
-from utils.types import RawCustomField
+
 from .base import BaseValidator, ValidationError
+from ..types import RawCustomField
+from ...list import ClickUpList
 
 
 class RelationValidator(BaseValidator):

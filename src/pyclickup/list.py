@@ -1,15 +1,42 @@
 from __future__ import annotations
-from services import clickup_api
-from services.cache import CustomFieldsCache
-from functools import cached_property
+from functools import cached_property, lru_cache
 from typing import Any, List, Union, Optional
-from utils.types import RawTask, RawCustomField
+
+from .services import clickup_api
+from .services.cache import CustomFieldsCache, ClientListsRegistry
+from .utils.types import RawTask, RawCustomField
  
 
 class TaskIdNotFound(Exception):
     """Raised, when there is no `id` found in task object."""
 
-class ClickUpList:
+class ClientListsLookup(type):
+    """
+    Metaclass that will store each client class to the registry.
+    So, when a client define a class
+    ```
+    class ClientsClass(ClickUpList):
+        ...fields
+    ```
+    the `ClientsClass` will be stored in the registry as 
+    {
+        client_list_name: client_list_class
+    }
+    """
+    
+    def __new__(cls, name, bases, attrs):
+        cls = type.__new__(cls, name, bases, attrs)
+
+        if bases: 
+            ClientListsRegistry.update({
+                name: cls 
+                for base in bases
+                if base == ClickUpList
+            })
+
+        return cls
+
+class ClickUpList(metaclass=ClientListsLookup):
     """
     Base ClickUp list representation, that will have default ClickUp task
     properties. 
@@ -64,15 +91,47 @@ class ClickUpList:
             return custom_fields
 
         return self.__get_custom_fields_from_api()
+
+    @classmethod
+    @lru_cache(maxsize=1)
+    def get_all_tasks(cls) -> List[RawTask]:
+        """Method that will fetch all the tasks from the current list."""
+        page = 0  
+        all_tasks = []
+
+        while True:
+            tasks = clickup_api.get_batch_tasks(cls.LIST_ID, page).get('tasks')
+
+            if not tasks: break
+
+            all_tasks.extend(tasks)
+
+            if tasks and len(tasks) < 100: break
+
+            page += 1
+
+        return all_tasks 
     
     # CRUD functionality
     @classmethod
-    def get(cls, task_id: str):
+    def get_by_id(cls, task_id: str):
         """Class method, that will fetch task by its id."""
         raw_task = clickup_api.get_task(task_id=task_id)
         return cls(raw_task)
 
-    def post(self):
+    @classmethod
+    def get_by_name(cls, task_name: str):
+        """Class method, that will fetch task by its name."""
+
+        raw_task = next(filter(
+            lambda task: task['name'] == task_name, cls.get_all_tasks()
+        ), None)
+
+        if not raw_task: return
+
+        return cls(raw_task)
+
+    def create(self):
         """
         Method, that will get current raw_task 
         values and push them to ClickUp.
@@ -108,4 +167,3 @@ class ClickUpList:
                     field_id=field['id'],
                     value=field['value']
                 )
-     

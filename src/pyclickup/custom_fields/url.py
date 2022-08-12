@@ -1,6 +1,5 @@
-from typing import Any
 from .base import CustomField
-from utils.validators import UrlValidator
+from ..utils.validators import UrlValidator
 
 
 class UrlField(CustomField):
