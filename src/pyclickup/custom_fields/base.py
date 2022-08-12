@@ -8,6 +8,9 @@ from ..utils.validators import StringValidator
 class CustomFieldNotFound(Exception):
     """Raised if raw custom field not found in raw clickup list."""
 
+class CustomFieldIsNull(Exception):
+    """Raised when None is set to required field."""
+
 class CustomField:
     """
     Descriptor class that will set the workflow with ClickUp task's custom
@@ -33,8 +36,9 @@ class CustomField:
     TYPE = None
     VALIDATOR = StringValidator
 
-    def __init__(self, field_name: str):
+    def __init__(self, field_name: str, required: bool=False):
         self.field_name = field_name
+        self.required = required
 
     def __get__(self, instance: Any, instance_type: Type) -> Any:
         """
@@ -48,11 +52,19 @@ class CustomField:
     def __set__(self, instance: ClickUpList, value: Any) -> None:
         """
         Descriptor SET method that will:
-        1) Do pre-set workflow (check class docstring)
-        2) Validate value to be the right type
-        3) Run setter method (set_value)
-        4) Store new value in cache
+        1) Check if there is a value and if the field is not
+           required we can set None.
+        2) Do pre-set workflow (check class docstring)
+        3) Validate value to be the right type
+        4) Run setter method (set_value)
+        5) Store new value in cache
         """
+
+        if value is None:
+            if self.required:
+                return 
+            raise CustomFieldIsNull(f"`{self.field_name}` can not be None")
+
         raw_field = self._raw_field(instance)
         self.__validate_value(value, raw_field)
         self.set_value(value, raw_field)
