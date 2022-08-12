@@ -11,6 +11,7 @@ from .currency import CurrencyField
 from .location import LocationField
 from .date import DateField
 from .labels import LabelsField
+from .formula import FormulaField
 
 
 __all__ = [
@@ -26,5 +27,6 @@ __all__ = [
     "CurrencyField",
     "LocationField",
     "DateField",
-    "LabelsField"
+    "LabelsField",
+    "FormulaField"
 ]

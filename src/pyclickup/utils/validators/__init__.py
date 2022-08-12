@@ -8,3 +8,4 @@ from .url import UrlValidator
 from .uuid import UuidValidator
 from .date import DateValidator
 from .labels import LabelsValidator
+from .base import ForbidValuesValidator
