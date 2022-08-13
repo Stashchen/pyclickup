@@ -1,0 +1,167 @@
+{
+  "id": "client_1_task_id",
+  "name": "Client 1 Task",
+  "description": "Some description",
+  "custom_fields": [
+    {
+      "id": "cf_id_1",
+      "name": "Short Text",
+      "type": "short_text",
+      "type_config": {},
+      "date_created": "1630471348564",
+      "hide_from_guests": false,
+      "required": false
+    },
+    {
+      "id": "cf_id_2",
+      "name": "Drop Down",
+      "type": "drop_down",
+      "type_config": {
+        "new_drop_down": true,
+        "options": [
+          {
+            "id": "id_1",
+            "name": "Option 1",
+            "color": null,
+            "orderindex": 0
+          },
+          {
+            "id": "id_2",
+            "name": "Option 2",
+            "color": null,
+            "orderindex": 1
+          }
+        ]
+      },
+      "date_created": "1627798192369",
+      "hide_from_guests": false,
+      "required": false
+    },
+    {
+      "id": "cf_id_3",
+      "name": "Formula",
+      "type": "formula",
+      "date_created": "1630470324601",
+      "hide_from_guests": false,
+      "value": "From Formula",
+      "required": false
+    },
+    {
+      "id": "cf_id_4",
+      "name": "Number",
+      "type": "number",
+      "type_config": {},
+      "date_created": "1630470349573",
+      "hide_from_guests": false,
+      "value": 123,
+      "required": false
+    },
+    {
+      "id": "cf_id_5",
+      "name": "Labels",
+      "type": "labels",
+      "type_config": {
+        "options": [
+          {
+            "id": "label_id_1",
+            "label": "Label #1",
+            "color": null
+          },
+          {
+            "id": "label_id_2",
+            "label": "Label #2",
+            "color": null
+          }
+        ]
+      },
+      "date_created": "1634149226270",
+      "hide_from_guests": false,
+      "value": ["label_id_1"],
+      "required": false
+    },
+    {
+      "id": "cf_id_6",
+      "name": "Text",
+      "type": "text",
+      "type_config": {},
+      "date_created": "1639588638869",
+      "hide_from_guests": false,
+      "value": "Some text",
+      "required": false
+    },
+    {
+      "id": "cf_id_7",
+      "name": "Currency",
+      "type": "currency",
+      "type_config": {
+        "default": null,
+        "precision": 2,
+        "currency_type": "USD"
+      },
+      "date_created": "1634869884401",
+      "hide_from_guests": false,
+      "value": 500,
+      "required": false
+    },
+    {
+      "id": "cf_id_8",
+      "name": "Location",
+      "type": "location",
+      "type_config": {},
+      "date_created": "1634652393322",
+      "hide_from_guests": false,
+      "required": false
+    },
+    {
+      "id": "cf_id_9",
+      "name": "Client 2 realtion",
+      "type": "list_relationship",
+      "type_config": {},
+      "date_created": "1643907374482",
+      "hide_from_guests": false,
+      "required": false
+    },
+    {
+      "id": "cf_id_10",
+      "name": "Checkbox",
+      "type": "checkbox",
+      "type_config": {},
+      "date_created": "1644434029690",
+      "hide_from_guests": false,
+      "value": "true",
+      "required": false
+    },
+    {
+      "id": "cf_id_11",
+      "name": "Checkin",
+      "type": "date",
+      "type_config": {},
+      "date_created": "1630470294756",
+      "hide_from_guests": false,
+      "value": "1630470294756",
+      "required": false
+    },
+    {
+      "id": "cf_id_12",
+      "name": "Email",
+      "type": "email",
+      "type_config": {},
+      "date_created": "1630469598439",
+      "hide_from_guests": false,
+      "value": "example@example.com",
+      "required": false
+    },
+    {
+      "id": "cf_id_13",
+      "name": "Phone",
+      "type": "phone",
+      "type_config": {},
+      "date_created": "1639390813671",
+      "hide_from_guests": false,
+      "value": "9417023418",
+      "required": false
+    }
+  ],
+  "url": "https://app.clickup.com/t/client_1_task_id",
+  "list": { "id": "client_1_list_id", "name": "Client 1", "access": true }
+}

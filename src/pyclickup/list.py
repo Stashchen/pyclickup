@@ -10,6 +10,11 @@ from .utils.types import RawTask, RawCustomField
 class TaskIdNotFound(Exception):
     """Raised, when there is no `id` found in task object."""
 
+class TaskFromWrongList(Exception):
+    """
+    Raised, when we fetch task by id from correct space, but for wrong list
+    """
+
 class ClientListsLookup(type):
     """
     Metaclass that will store each client class to the registry.
@@ -126,6 +131,16 @@ class ClickUpList(metaclass=ClientListsLookup):
     def get_by_id(cls, task_id: str):
         """Class method, that will fetch task by its id."""
         raw_task = clickup_api.get_task(task_id=task_id)
+
+        if raw_task is None:
+            return
+
+        if raw_task['list']['id'] != cls.LIST_ID:
+            raise TaskFromWrongList(
+                "You have tried to fetch task from wrong list."
+                "Please, check your's object list class."
+            )
+
         return cls(raw_task)
 
     @classmethod
@@ -164,7 +179,7 @@ class ClickUpList(metaclass=ClientListsLookup):
             raise TaskIdNotFound("Can not update unexisted Task")
 
         body = dict(name=self.name)
-        clickup_api.update_task(self.id, **body)
+        self._raw_task = clickup_api.update_task(self.id, **body)
  
         custom_fields = self._fields_cache.get()
 
