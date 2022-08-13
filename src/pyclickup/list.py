@@ -15,6 +15,11 @@ class TaskFromWrongList(Exception):
     Raised, when we fetch task by id from correct space, but for wrong list
     """
 
+class ReadOnlyTaskField(Exception):
+    """
+    Raised, when there was a try of manual update of task's `id` field.
+    """
+
 class ClientListsLookup(type):
     """
     Metaclass that will store each client class to the registry.
@@ -66,6 +71,13 @@ class ClickUpList(metaclass=ClientListsLookup):
     def id(self) -> Optional[str]:
         return self._raw_task.get("id")
 
+    @id.setter
+    def id(self, value: Any) -> None:
+        raise ReadOnlyTaskField(
+            "You can't set new `id` manually."
+            "`id` will be added to the task when you will get/create a task" 
+        )
+
     @property
     def name(self) -> Optional[str]:
         return self._raw_task.get("name")
@@ -89,6 +101,13 @@ class ClickUpList(metaclass=ClientListsLookup):
     @property
     def url(self) -> Optional[str]:
         return self._raw_task.get("url")
+
+    @url.setter
+    def url(self, value: Any) -> None:
+        raise ReadOnlyTaskField(
+            "You can't set new `url` manually."
+            "`url` will be added to the task when you will get/create a task" 
+        )
 
     @cached_property
     def custom_fields(self) -> List[RawCustomField]:
@@ -178,7 +197,11 @@ class ClickUpList(metaclass=ClientListsLookup):
         if not self.id:
             raise TaskIdNotFound("Can not update unexisted Task")
 
-        body = dict(name=self.name)
+        body = dict(
+            name=self.name,
+            description=self.description
+        )
+
         self._raw_task = clickup_api.update_task(self.id, **body)
  
         custom_fields = self._fields_cache.get()
