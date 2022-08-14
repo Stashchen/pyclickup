@@ -16,7 +16,7 @@ class LocationField(CustomField):
     def get_value(self, raw_field: RawCustomField) -> Optional[str]:
         value = raw_field.get("value")
         
-        if not value:
+        if value is None:
             return
 
         return value['formatted_address']

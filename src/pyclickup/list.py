@@ -113,7 +113,7 @@ class ClickUpList(metaclass=ClientListsLookup):
     def custom_fields(self) -> List[RawCustomField]:
         """
         Try to get custom fields from `raw_task`. If they are not found,
-        they will be pulled from API.
+        they will be pulled from clickup.
         """
         custom_fields = self._raw_task.get('custom_fields')
 

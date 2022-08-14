@@ -10,9 +10,9 @@ class DropDownField(CustomField):
     VALIDATOR = DropDownValidator
 
     def get_value(self, raw_field: RawCustomField) -> Optional[str]:
-        orderindex = raw_field['value']
+        orderindex = raw_field.get('value')
 
-        if not orderindex:
+        if orderindex is None:
             return
 
         options = raw_field['type_config']['options']

@@ -10,9 +10,9 @@ class LabelsField(CustomField):
     VALIDATOR = LabelsValidator
 
     def get_value(self, raw_field: RawCustomField) -> List[str]:
-        value_ids = raw_field['value']
+        value_ids = raw_field.get('value')
 
-        if not value_ids:
+        if value_ids is None:
             return []
  
         options = raw_field['type_config']['options']

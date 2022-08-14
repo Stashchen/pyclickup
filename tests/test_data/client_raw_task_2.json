@@ -1,0 +1,8 @@
+{
+  "id": "client_2_task_id",
+  "name": "Client 2 Task",
+  "description": "Some description",
+  "custom_fields": [],
+  "url": "https://app.clickup.com/t/client_2_task_id",
+  "list": { "id": "client_2_list_id", "name": "Client 2", "access": true }
+}

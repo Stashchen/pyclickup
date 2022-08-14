@@ -18,18 +18,17 @@ class OptionsListValidator(BaseValidator):
     def __has_good_options(
         cls, value: Union[str, List[str]], valid_options_names: List[str]
     ) -> bool:
+        return all([name in valid_options_names for name in value])
+                
+    @classmethod
+    def validate(cls, value: Any, raw_field: RawCustomField) -> None:
+        
+        if not (isinstance(value, list) or isinstance(value,  str)):
+            raise ValidationError("Must be `str` or `list`")
 
         if isinstance(value, str):
             value = [value]
 
-        return all([name in valid_options_names for name in value])
-                
-    @classmethod
-    def validate(
-        cls,
-        value: Any,
-        raw_field: RawCustomField
-    ) -> None:
         options = raw_field['type_config']['options']
         valid_names = list(map(lambda option: option[cls.NAME_KEY], options))
 

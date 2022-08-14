@@ -10,6 +10,7 @@
       "type_config": {},
       "date_created": "1630471348564",
       "hide_from_guests": false,
+      "value": "Some text",
       "required": false
     },
     {
@@ -35,6 +36,7 @@
       },
       "date_created": "1627798192369",
       "hide_from_guests": false,
+      "value": 0,
       "required": false
     },
     {
@@ -110,15 +112,27 @@
       "type_config": {},
       "date_created": "1634652393322",
       "hide_from_guests": false,
+      "value": {
+        "location": {
+          "lat": "51.5235742",
+          "lng": "-0.1587917"
+        },
+        "formatted_address": "221B Baker St"
+      },
       "required": false
     },
     {
       "id": "cf_id_9",
       "name": "Client 2 realtion",
       "type": "list_relationship",
-      "type_config": {},
+      "type_config": {
+        "subcategory_id": "client_2_list_id" 
+      },
       "date_created": "1643907374482",
       "hide_from_guests": false,
+      "value": [{
+        "id": "some_good_task_id" 
+      }],
       "required": false
     },
     {
@@ -133,12 +147,12 @@
     },
     {
       "id": "cf_id_11",
-      "name": "Checkin",
+      "name": "Date",
       "type": "date",
       "type_config": {},
       "date_created": "1630470294756",
       "hide_from_guests": false,
-      "value": "1630470294756",
+      "value": "1670792400000",
       "required": false
     },
     {
@@ -159,6 +173,16 @@
       "date_created": "1639390813671",
       "hide_from_guests": false,
       "value": "9417023418",
+      "required": false
+    },
+    {
+      "id": "cf_id_14",
+      "name": "Url",
+      "type": "url",
+      "type_config": {},
+      "date_created": "1639390813671",
+      "hide_from_guests": false,
+      "value": "https://some_url",
       "required": false
     }
   ],

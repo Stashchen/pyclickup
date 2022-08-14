@@ -26,9 +26,12 @@ class RelationField(CustomField):
         related_list = self._related_list
 
         if isinstance(related_list, str):
+            related_list_name = related_list
             related_list = ClientListsRegistry.get(related_list)
             if not related_list:
-                raise ClientListNotFound("No such class")
+                raise ClientListNotFound(
+                    f"There is no such class: {related_list_name}"
+                )
 
         return related_list
 
@@ -47,7 +50,7 @@ class RelationField(CustomField):
     def get_value(self, raw_field: RawCustomField) -> List[ClickUpList]:
         values = raw_field.get("value")
 
-        if not values:
+        if values is None:
             return []
 
         def build_correct_task(value: dict) -> ClickUpList:

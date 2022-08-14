@@ -3,6 +3,9 @@ from geopy.geocoders import Nominatim
 from geopy.exc import GeopyError
 
 
+class AddressNotFound(Exception):
+    """Raised when address is not found via geopy."""
+
 @dataclass
 class Location:
     latitude: float
@@ -30,13 +33,13 @@ class GeolocationGrabber:
         try:
             raw_location = self._geolocator.geocode(address)
         except GeopyError:
-            raise Exception(
+            raise GeopyError(
                 "Something happen with Geopy request."
                 "Please, check that address is valid."
             )
 
         if not raw_location:
-            raise Exception("Address not found") 
+            raise AddressNotFound(f"`{address}` is not valid or not found.") 
 
         return Location(
             address=address,

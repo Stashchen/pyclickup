@@ -60,14 +60,17 @@ class CustomField:
         5) Store new value in cache
         """
 
+        raw_field = self._raw_field(instance)
+
         if value is None:
             if self.required:
-                return 
-            raise CustomFieldIsNull(f"`{self.field_name}` can not be None")
+                raise CustomFieldIsNull(f"`{self.field_name}` can not be None")
 
-        raw_field = self._raw_field(instance)
-        self.__validate_value(value, raw_field)
-        self.set_value(value, raw_field)
+            raw_field['value'] = None
+        else:
+            self.__validate_value(value, raw_field)
+            self.set_value(value, raw_field)
+
         self.__store_value_in_cache(instance, raw_field)
 
     def get_value(self, raw_field: RawCustomField) -> Optional[Any]:
@@ -78,7 +81,7 @@ class CustomField:
         By default it will return raw custom field's `value` attr.
         Can be implemented in subclasses
         """
-        return raw_field.get('value')
+        return raw_field.get('value', None)
 
     def set_value(
         self, value: Any, raw_field: RawCustomField
