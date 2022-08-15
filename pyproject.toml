@@ -26,3 +26,6 @@ dependencies = [
 dev = [
     "pytest>=7.1.2",
 ]
+
+[project.urls]
+"Homepage" = "https://github.com/Stashchen/pyclickup"
