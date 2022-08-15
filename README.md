@@ -7,7 +7,7 @@ The greatest benefit of using this library is that you do not need to think abou
 ## Initialization
 All you need to do is to install the library with your package manager
 ```
-pip install PyClickup
+pip install python-clickup
 ```
 
 ## Getting Started

@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "PyClickup"
-version = "1.0.0"
+name = "python-clickup"
+version = "1.0.3"
 authors = [
   { name="Pavel Stashchenko", email="pavel.stashchenko@gmail.com" },
 ]
@@ -18,13 +18,13 @@ classifiers = [
     "Operating System :: OS Independent",
 ]
 dependencies = [
-    "requests>=2.28.1",
-    "geopy>=2.2.0"
+    "requests==2.28.1",
+    "geopy==2.2.0"
 ]
 
 [project.optional-dependencies]
 dev = [
-    "pytest>=7.1.2",
+    "pytest==7.1.2",
 ]
 
 [project.urls]
