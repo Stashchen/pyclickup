@@ -34,7 +34,7 @@ and here is `Units` task
 ### 3. Create List wrappers
 To create wrappers for your lists, you need to do the following steps:
 1) Create your list class as subclass of `ClickUpList` class
-2) Add `LIST_ID` class variable to your class. ([How to get LIST_ID?](#how-to-get-list_id%3F))
+2) Add `LIST_ID` class variable to your class. ([How to get LIST_ID?](#how-to-get-list_id))
 3) Add required custom fields. Notice, that it is not required to set all the fields from your ClickUp list. You are free to add only useful custom fields.
 
 Here is the example of wrappers that we can create for example space hierarchy
