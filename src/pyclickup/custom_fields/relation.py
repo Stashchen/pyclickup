@@ -40,10 +40,15 @@ class RelationField(CustomField):
         value: ClickUpList,
         raw_field: RawCustomField
     ) -> None:
-        current_values = raw_field["value"] 
+        current_values = raw_field.get("value")
 
         if not current_values:
             current_values = []
+
+        if current_values:
+            existed_ids = list(map(lambda item: item['id'], current_values))
+            if value.id in existed_ids:
+                return
 
         raw_field['value'] = [*current_values, dict(id=value.id)]
 
