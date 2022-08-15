@@ -107,11 +107,11 @@ This example does not include all the CustomFields. You can get the list of all 
 
 ## FAQ
 ### How to get LIST_ID?
-1) Click on menu button on your list and click `Copy link`
+Click on menu button on your list and click `Copy link`
 <br>
 ![list-id-steps](./docs/images/list-id-steps.jpeg)
 
-2) Paste link somewhere and extract the `LIST_ID` 
+Paste link somewhere and extract the `LIST_ID` 
 <br>
 ![list-id-link](./docs/images/list-id-link.jpeg)
 
