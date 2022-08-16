@@ -6,6 +6,7 @@ from .services import clickup_api
 from .services.cache import CustomFieldsCache, ClientListsRegistry
 from .utils.exceptions.fields import ReadOnlyTaskField, RequiredFieldMissing
 from .utils.exceptions.tasks import TaskFromWrongList
+from .utils.exceptions.lists import ListIdNotFound
 from .utils.types import RawTask, RawCustomField
  
 
@@ -27,10 +28,16 @@ class ClientListsLookup(type):
         cls = type.__new__(cls, name, bases, attrs)
 
         if bases: 
+            list_id = attrs.get("LIST_ID")
+
+            if list_id is None:
+                raise ListIdNotFound(
+                    f"Please, provide valid LIST_ID for your "
+                    f"`{cls.__name__}` class."
+                )
+
             ClientListsRegistry.update({
-                name: cls 
-                for base in bases
-                if base == ClickUpList
+                name: cls for base in bases if base == ClickUpList
             })
 
         return cls
