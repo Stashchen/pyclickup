@@ -4,7 +4,9 @@ from typing import Any, List, Union, Optional, Generator
 
 from .services import clickup_api
 from .services.cache import CustomFieldsCache, ClientListsRegistry
-from .utils.exceptions.fields import ReadOnlyTaskField, RequiredFieldMissing
+from .utils.exceptions.fields import (
+    ReadOnlyTaskField, RequiredFieldMissing, InvalidOption
+)
 from .utils.exceptions.tasks import TaskFromWrongList
 from .utils.exceptions.lists import ListIdNotFound
 from .utils.types import RawTask, RawCustomField
@@ -73,6 +75,37 @@ class ClickUpList(metaclass=ClientListsLookup):
             "You can't set new `id` manually."
             "`id` will be added to the task when you will get/create a task" 
         )
+
+    @property
+    def status(self) -> Optional[str]:
+        raw_status = self._raw_task.get('status')
+
+        if raw_status is None:
+            return
+
+        return raw_status['status'].capitalize()
+
+    @status.setter
+    def status(self, value: Any) -> None:
+        conditions = [
+            value is not None,
+            isinstance(value, str),
+            value.capitalize() in self.statuses
+        ]
+
+        if not all(conditions):
+            raise InvalidOption(
+                f"`{value}` is not a valid status.\n"
+                f"List of possible statuses: {self.statuses}"
+            )
+
+        self._raw_task['status'] = dict(status=value) 
+
+    @cached_property
+    def statuses(self) -> List[str]:
+        raw_list = clickup_api.get_list(self.LIST_ID)
+        statuses = raw_list['statuses'] 
+        return list(map(lambda status: status['status'].capitalize(), statuses))
 
     @property
     def name(self) -> Optional[str]:
@@ -203,7 +236,8 @@ class ClickUpList(metaclass=ClientListsLookup):
 
         body = dict(
             name=self.name,
-            description=self.description
+            description=self.description,
+            status=self.status
         )
 
         self._raw_task = clickup_api.update_task(self.id, **body)

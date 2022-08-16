@@ -10,3 +10,8 @@ class RequiredFieldMissing(Exception):
 class CustomFieldNotFound(Exception):
     """Raised if raw custom field not found in raw clickup list."""
 
+class InvalidOption(Exception):
+    """
+    Raises when you try to set invalid option to a field with options
+    (e.g. status)
+    """

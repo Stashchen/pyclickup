@@ -11,6 +11,7 @@ class RawCustomField(TypedDict):
 class RawTask(TypedDict):
     id: str
     description: str
+    status: dict
     url: str
     name: str
     type: str

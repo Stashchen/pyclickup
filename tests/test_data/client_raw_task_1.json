@@ -2,6 +2,9 @@
   "id": "client_1_task_id",
   "name": "Client 1 Task",
   "description": "Some description",
+  "status": {
+    "status": "Some Status"
+  },
   "custom_fields": [
     {
       "id": "cf_id_1",

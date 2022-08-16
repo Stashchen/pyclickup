@@ -38,6 +38,10 @@ class ClickUpApi(BaseApi):
         )
 
     @resp_to_json
+    def get_list(self, list_id: str) -> Response:
+        return self.get(f"{self.endpoint}/list/{list_id}")
+
+    @resp_to_json
     def create_task(self, list_id: str, **kwargs) -> Response:
         return self.post(f"{self.endpoint}/list/{list_id}/task", json=kwargs)
 
