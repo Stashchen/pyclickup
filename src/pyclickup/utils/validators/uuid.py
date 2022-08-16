@@ -1,8 +1,8 @@
 import re
 from typing import Any
 
-from .base import ValidationError
 from .string import StringValidator
+from ..exceptions.validators import ValidationError
 from ..types import RawCustomField
 
 

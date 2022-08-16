@@ -2,7 +2,7 @@ import os
 import pytest
 
 from pyclickup.services.clickup import ClickUpApi
-from pyclickup.utils.exceptions import AuthTokenMissing
+from pyclickup.utils.exceptions.http import AuthTokenMissing
 
 
 def test_perform_auth__no_token__error_raised():

@@ -1,7 +1,8 @@
 from datetime import date, datetime
 from typing import Any
 
-from .base import BaseValidator, ValidationError
+from .base import BaseValidator
+from ..exceptions.validators import ValidationError
 from ..types import RawCustomField
 
 

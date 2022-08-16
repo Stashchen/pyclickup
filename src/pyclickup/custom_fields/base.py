@@ -1,15 +1,11 @@
 from typing import Any, Optional, Type
 
 from ..list import ClickUpList
+from ..utils.exceptions.fields import RequiredFieldMissing, CustomFieldNotFound
 from ..utils.types import RawCustomField
 from ..utils.validators import StringValidator
 
 
-class CustomFieldNotFound(Exception):
-    """Raised if raw custom field not found in raw clickup list."""
-
-class CustomFieldIsNull(Exception):
-    """Raised when None is set to required field."""
 
 class CustomField:
     """
@@ -64,7 +60,9 @@ class CustomField:
 
         if value is None:
             if self.required:
-                raise CustomFieldIsNull(f"`{self.field_name}` can not be None")
+                raise RequiredFieldMissing(
+                    f"`{self.field_name}` can not be None"
+                )
 
             raw_field['value'] = None
         else:
@@ -93,7 +91,6 @@ class CustomField:
         Can be implemented in subclasses
         """
         raw_field['value'] = value
-
 
     def __validate_value(
             self,

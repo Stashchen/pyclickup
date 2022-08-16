@@ -1,9 +1,9 @@
 import pytest
 from datetime import datetime
 
-from pyclickup.custom_fields.base import CustomFieldIsNull
 from pyclickup.services.geolocation import Location
-from pyclickup.utils.validators.base import ValidationError
+from pyclickup.utils.exceptions.validators import ValidationError
+from pyclickup.utils.exceptions.fields import RequiredFieldMissing
 
 
 # Required field
@@ -11,7 +11,7 @@ def test_non_required_field__no_data__return_none(client_1_empty_task):
     assert client_1_empty_task.text is None
 
 def test_required_field__set_none__raise_error(client_1_task):
-    with pytest.raises(CustomFieldIsNull):
+    with pytest.raises(RequiredFieldMissing):
         client_1_task.short_text = None
 
 # Text field
@@ -129,14 +129,17 @@ def test_relation_field_set__not_task__raise_error(client_1_task):
 
 # Phone field
 def test_phone_field_get__exists__return_string(client_1_task):
-    assert client_1_task.phone == "9417023418"
+    assert client_1_task.phone == "+9417023418"
 
 def test_phone_field_get__no_data__return_none(client_1_empty_task):
     assert client_1_empty_task.phone is None
 
 def test_phone_field_set__valid_string__update_field(client_1_task):
-    client_1_task.phone = "1234567890"
-    assert client_1_task.phone == "1234567890"
+    client_1_task.phone = "+1234567890"
+    assert client_1_task.phone == "+1234567890"
+
+    client_1_task.phone = "+123 456 7890"
+    assert client_1_task.phone == "+123 456 7890"
 
 def test_phone_field_set__invalid_string__raise_error(client_1_task):
     with pytest.raises(ValidationError):

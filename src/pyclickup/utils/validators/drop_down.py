@@ -1,7 +1,7 @@
 from typing import Any, List
 
-from .base import ValidationError
 from .string import StringValidator
+from ..exceptions.validators import ValidationError
 from ..types import RawCustomField
 
 
@@ -20,11 +20,7 @@ class DropDownValidator(StringValidator):
         return good_option is not None
                 
     @classmethod
-    def validate(
-        cls,
-        value: Any,
-        raw_field: RawCustomField
-    ) -> None:
+    def validate(cls, value: Any, raw_field: RawCustomField) -> None:
         super().validate(value, raw_field)
 
         options = raw_field['type_config']['options']

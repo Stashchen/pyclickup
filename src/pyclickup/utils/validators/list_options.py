@@ -1,6 +1,7 @@
 from typing import Any, List, Union
 
-from .base import BaseValidator, ValidationError
+from .base import BaseValidator
+from ..exceptions.validators import ValidationError
 from ..types import RawCustomField
 
 

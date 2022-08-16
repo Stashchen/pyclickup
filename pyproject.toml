@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "python-clickup"
-version = "1.0.8"
+version = "1.0.11"
 authors = [
   { name="Pavel Stashchenko", email="pavel.stashchenko@gmail.com" },
 ]

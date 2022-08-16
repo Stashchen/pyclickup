@@ -3,7 +3,7 @@ from requests import Response
 
 from .base import BaseApi
 from ..utils.decorators import resp_to_json
-from ..utils.exceptions import AuthTokenMissing
+from ..utils.exceptions.http import AuthTokenMissing
 
 
 class ClickUpApi(BaseApi):

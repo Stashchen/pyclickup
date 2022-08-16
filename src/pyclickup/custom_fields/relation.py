@@ -3,12 +3,10 @@ from .base import CustomField
 from ..list import ClickUpList
 from ..services import clickup_api
 from ..services.cache import ClientListsRegistry
+from ..utils.exceptions.lists import ClientListNotFound
 from ..utils.types import RawCustomField
 from ..utils.validators import RelationValidator
 
-
-class ClientListNotFound(Exception):
-    """Raised when client list class not found."""
 
 class RelationField(CustomField):
     TYPE = "list_relationship"
@@ -30,7 +28,7 @@ class RelationField(CustomField):
             related_list = ClientListsRegistry.get(related_list)
             if not related_list:
                 raise ClientListNotFound(
-                    f"There is no such class: {related_list_name}"
+                    f"There is no such list: {related_list_name}"
                 )
 
         return related_list

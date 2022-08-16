@@ -1,11 +1,8 @@
 from abc import abstractmethod, ABC
 from typing import Any
 
+from ..exceptions.validators import ValidationError
 from ..types import RawCustomField
-
-
-class ValidationError(Exception):
-    """Raised by Validator when condition is not matched."""
 
 
 class BaseValidator(ABC):

@@ -4,21 +4,10 @@ from typing import Any, List, Union, Optional, Generator
 
 from .services import clickup_api
 from .services.cache import CustomFieldsCache, ClientListsRegistry
+from .utils.exceptions.fields import ReadOnlyTaskField, RequiredFieldMissing
+from .utils.exceptions.tasks import TaskFromWrongList
 from .utils.types import RawTask, RawCustomField
  
-
-class TaskIdNotFound(Exception):
-    """Raised, when there is no `id` found in task object."""
-
-class TaskFromWrongList(Exception):
-    """
-    Raised, when we fetch task by id from correct space, but for wrong list
-    """
-
-class ReadOnlyTaskField(Exception):
-    """
-    Raised, when there was a try of manual update of task's `id` field.
-    """
 
 class ClientListsLookup(type):
     """
@@ -154,7 +143,7 @@ class ClickUpList(metaclass=ClientListsLookup):
         if raw_task is None:
             return
 
-        if raw_task['list']['id'] != cls.LIST_ID:
+        if raw_task['list']['id'] != str(cls.LIST_ID):
             raise TaskFromWrongList(
                 "You have tried to fetch task from wrong list."
                 "Please, check your's object list class."
@@ -178,6 +167,11 @@ class ClickUpList(metaclass=ClientListsLookup):
         Method, that will get current raw_task 
         values and push them to ClickUp.
         """
+        if not self.name:
+            raise RequiredFieldMissing(
+                "You must set `name` attribute before creating a task"
+            ) 
+
         custom_fields = self._fields_cache.get()
         body = dict(
             name=self.name,
@@ -195,7 +189,10 @@ class ClickUpList(metaclass=ClientListsLookup):
         3) Update custom fields
         """
         if not self.id:
-            raise TaskIdNotFound("Can not update unexisted Task")
+            raise RequiredFieldMissing(
+                "You can't update task with proper `id`.\n"
+                "Maybe you wanted to `create` a new task?"
+            )
 
         body = dict(
             name=self.name,

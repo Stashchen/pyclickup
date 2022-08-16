@@ -1,5 +1,5 @@
 import pytest
-from pyclickup.list import TaskIdNotFound
+from pyclickup.utils.exceptions.fields import RequiredFieldMissing
 
 
 def test_update__task_with_id__update_obj(
@@ -28,5 +28,5 @@ def test_update__task_without_id__raise_error(
 
     task = client_list_1()
 
-    with pytest.raises(TaskIdNotFound):
+    with pytest.raises(RequiredFieldMissing):
         task.update()

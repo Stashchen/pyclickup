@@ -1,6 +1,6 @@
 from requests import Response
 from typing import Callable
-from .exceptions import BadRequest
+from .exceptions.http import BadRequest
 
 
 def resp_to_json(func: Callable) -> Callable:
