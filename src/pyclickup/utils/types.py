@@ -12,6 +12,7 @@ class RawTask(TypedDict):
     id: str
     description: str
     status: dict
+    due_date: str  # "timestamp"
     url: str
     name: str
     type: str

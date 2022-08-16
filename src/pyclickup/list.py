@@ -1,9 +1,11 @@
 from __future__ import annotations
+from datetime import datetime
 from functools import cached_property
 from typing import Any, List, Union, Optional, Generator
 
 from .services import clickup_api
 from .services.cache import CustomFieldsCache, ClientListsRegistry
+from .utils.date_format import ClickupDateFormat 
 from .utils.exceptions.fields import (
     ReadOnlyTaskField, RequiredFieldMissing, InvalidOption
 )
@@ -75,6 +77,24 @@ class ClickUpList(metaclass=ClientListsLookup):
             "You can't set new `id` manually."
             "`id` will be added to the task when you will get/create a task" 
         )
+
+    @property
+    def due_date(self) -> Optional[datetime]:
+        timestamp = self._raw_task.get("due_date")
+        
+        if timestamp is None:
+            return 
+
+        return ClickupDateFormat.timestamp_to_datetime(timestamp)
+
+    @due_date.setter
+    def due_date(self, value: Any) -> Optional[datetime]:
+        if not isinstance(value, datetime):
+            raise TypeError("`due_date` attribute must be `datetime`") 
+
+        timestamp = ClickupDateFormat.datetime_to_timestamp(value)
+
+        self._raw_task['due_date'] = timestamp 
 
     @property
     def status(self) -> Optional[str]:
@@ -171,9 +191,10 @@ class ClickUpList(metaclass=ClientListsLookup):
         page = 0
         tasks = clickup_api.get_batch_tasks(cls.LIST_ID, page).get('tasks')
 
-        yield tasks if tasks else []
-
-        page += 1
+        while tasks:
+            yield tasks if tasks else []
+            tasks = clickup_api.get_batch_tasks(cls.LIST_ID, page).get('tasks')
+            page += 1
     
     @classmethod
     def get_by_id(cls, task_id: str):
@@ -234,13 +255,14 @@ class ClickUpList(metaclass=ClientListsLookup):
                 "Maybe you wanted to `create` a new task?"
             )
 
-        body = dict(
+        default_fields = dict(
             name=self.name,
             description=self.description,
-            status=self.status
+            status=self.status,
+            due_date=self._raw_task.get('due_date')
         )
 
-        self._raw_task = clickup_api.update_task(self.id, **body)
+        self._raw_task = clickup_api.update_task(self.id, **default_fields)
  
         custom_fields = self._fields_cache.get()
 

@@ -2,6 +2,7 @@
   "id": "client_1_task_id",
   "name": "Client 1 Task",
   "description": "Some description",
+  "due_date": "1670792400000",
   "status": {
     "status": "Some Status"
   },
