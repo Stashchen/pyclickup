@@ -236,6 +236,9 @@ class ClickUpList(metaclass=ClientListsLookup):
         custom_fields = self._fields_cache.get()
         body = dict(
             name=self.name,
+            description=self.description,
+            status=self.status,
+            due_date=self._raw_task.get('due_date'),
             custom_fields=custom_fields
         )
         raw_task = clickup_api.create_task(self.LIST_ID, **body)
