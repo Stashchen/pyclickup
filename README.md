@@ -78,6 +78,7 @@ employee.id  # 2hravjh
 employee.name  # "Sherlock Holmes"
 employee.description  # "Great detective"
 employee.url  # "https://app.clickup.com/t/2hravjh"
+employee.status  # "To do"
 
 # Set new data
 from datetime import datetime 
