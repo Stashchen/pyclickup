@@ -64,7 +64,7 @@ class Units(ClickUpList):
     # Relations
     employees = RelationField("Employees", field_name="Employees")
 ```
-As you can see from the example, we have defined 2 classes that represents the structure of our ClickUp Lists. Let's have a closer look at how we define the custom fields for the lists. All the custom fields required `field_name` field that represents the name of the field in your list. Besides, `RelationField` requires additional field that stays for *name of custom list* that you like to relate with.
+As you can see from the example, we have defined 2 classes that represents the structure of our ClickUp Lists. Let's have a closer look at how we define the custom fields for the lists. All the custom fields require `field_name` parameter that represents the name of the field in your list. Besides, `RelationField` requires additional field that stays for *name of custom list* that you like to relate with.
 
 ### 4. Usage
 ```python
@@ -79,6 +79,7 @@ employee.name  # "Sherlock Holmes"
 employee.description  # "Great detective"
 employee.url  # "https://app.clickup.com/t/2hravjh"
 employee.status  # "To do"
+employee.due_date  # datetime obj
 
 # Set new data
 from datetime import datetime 
