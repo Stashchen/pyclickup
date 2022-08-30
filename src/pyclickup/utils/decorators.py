@@ -17,5 +17,5 @@ def resp_to_json(func: Callable) -> Callable:
         if resp.ok:
             return resp.json()
 
-        raise BadRequest(f"Status {resp.status_code}\nContent: {resp.json()}") 
+        raise BadRequest(f"Status {resp.status_code}\nContent: {resp.content}")
     return wrapper
